@@ -1,4 +1,4 @@
-class Protagonista extends Personagem {
+class Protagonista extends Animacao {
   constructor(
     sprite,
     spriteWidth,
@@ -24,20 +24,39 @@ class Protagonista extends Personagem {
       deltaY
     );
 
-    this.yInicial = height - this.charHeight - this.deltaY;
+    this.yInitial = height - this.charHeight - this.deltaY;
+    this.jumps = 0;
+    this.maxJumps = 2;
   }
 
   pula() {
-    this.velocidadeDoPulo -= this.alturaDoPulo;
+    if (this.jumps < this.maxJumps) {
+      this.jumpSpeed -= this.jumpHeight;
+      this.jumps++;
+      return;
+    }
   }
 
   aplicaGravidade() {
-    this.y += this.velocidadeDoPulo;
-    this.velocidadeDoPulo += this.gravidade;
+    this.y += this.jumpSpeed;
+    this.jumpSpeed += this.gravity;
 
-    if (this.y > this.yInicial) {
-      this.y = this.yInicial;
-      this.velocidadeDoPulo = 0;
+    if (this.y > this.yInitial) {
+      this.y = this.yInitial;
+      this.jumpSpeed = 0;
+      this.jumps = 0;
     }
+  }
+
+  moveLeft() {
+    if (this.x > 3) this.x -= 5;
+  }
+  moveRight() {
+    if (this.x < width - 3) this.x += 5;
+  }
+
+  resetPosition() {
+    this.x = 10;
+    this.y = this.yInitial;
   }
 }

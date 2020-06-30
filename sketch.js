@@ -1,125 +1,9 @@
-const Hipsta = {
-  sprite: "",
-  width: 110,
-  height: 135,
-  spriteWidth: 220,
-  spriteHeight: 270,
-  rows: 4,
-  cols: 4,
-  x: 0,
-  y: 0,
-  deltaY: 30,
-};
-const gotinha = {
-  sprite: "",
-  width: 52,
-  height: 52,
-  spriteWidth: 105,
-  spriteHeight: 104,
-  rows: 7,
-  cols: 4,
-  x: 52,
-  y: 0,
-  deltaY: 30,
-  matriz: [
-    [0, 0],
-    [105, 0],
-    [210, 0],
-    [315, 0],
-    [0, 104],
-    [105, 104],
-    [210, 104],
-    [315, 104],
-    [0, 208],
-    [105, 208],
-    [210, 208],
-    [315, 208],
-    [0, 312],
-    [105, 312],
-    [210, 312],
-    [315, 312],
-    [0, 416],
-    [105, 416],
-    [210, 416],
-    [315, 416],
-    [0, 520],
-    [105, 520],
-    [210, 520],
-    [315, 520],
-    [0, 624],
-    [105, 624],
-    [210, 624],
-    [315, 624],
-  ],
-  velocidade: 10,
-  delay: 100,
-};
-const troll = {
-  sprite: "",
-  width: 200,
-  height: 200,
-  spriteWidth: 400,
-  spriteHeight: 400,
-  rows: 6,
-  cols: 5,
-  x: 0,
-  y: 0,
-  deltaY: 0,
-  matriz: [
-    [0, 0],
-    [400, 0],
-    [800, 0],
-    [1200, 0],
-    [1600, 0],
-    [0, 400],
-    [400, 400],
-    [800, 400],
-    [1200, 400],
-    [1600, 400],
-    [0, 800],
-    [400, 800],
-    [800, 800],
-    [1200, 800],
-    [1600, 800],
-    [0, 1200],
-    [400, 1200],
-    [800, 1200],
-    [1200, 1200],
-    [1600, 1200],
-    [0, 1600],
-    [400, 1600],
-    [800, 1600],
-    [1200, 1600],
-    [1600, 1600],
-    [0, 2000],
-    [400, 2000],
-    [800, 2000],
-  ],
-  velocidade: 8,
-  delay: 200,
-};
-
-let cenario;
-let imagemCenario;
-let protagonista;
-let gotinha1;
-let troll1;
-let trilhaSonora;
-let somPulo;
-
-function preload() {
-  imagemCenario = loadImage("assets/imagens/cenario/floresta.png");
-  Hipsta.sprite = loadImage("assets/imagens/personagem/correndo.png");
-  gotinha.sprite = loadImage("assets/imagens/inimigos/gotinha.png");
-  troll.sprite = loadImage("assets/imagens/inimigos/troll.png");
-  trilhaSonora = loadSound("assets/sons/trilha_jogo.mp3");
-  somPulo = loadSound("assets/sons/somPulo.mp3");
-}
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   cenario = new Cenario(imagemCenario, 2);
+  pontuacao = new Pontuacao();
+  gameState = "start";
 
   protagonista = new Protagonista(
     Hipsta.sprite,
@@ -133,7 +17,7 @@ function setup() {
     Hipsta.y,
     Hipsta.deltaY
   );
-  gotinha1 = new Inimigo(
+  const gotinha1 = new Inimigo(
     gotinha.sprite,
     gotinha.spriteWidth,
     gotinha.spriteHeight,
@@ -141,30 +25,51 @@ function setup() {
     gotinha.height,
     gotinha.rows,
     gotinha.cols,
-    width - gotinha.width,
+    gotinha.x,
     gotinha.y,
     gotinha.deltaY,
     gotinha.matriz,
     gotinha.velocidade,
     gotinha.delay
   );
-  troll1 = new Inimigo(
+  const troll1 = new Inimigo(
     troll.sprite,
     troll.spriteWidth,
     troll.spriteHeight,
-    troll.charWidth,
-    troll.charHeight,
+    troll.width,
+    troll.height,
     troll.rows,
     troll.cols,
-    width,
+    troll.x,
     troll.y,
     troll.deltaY,
     troll.matriz,
     troll.velocidade,
     troll.delay
   );
+  const voador1 = new Inimigo(
+    gotinhaVoadora.sprite,
+    gotinhaVoadora.spriteWidth,
+    gotinhaVoadora.spriteHeight,
+    gotinhaVoadora.width,
+    gotinhaVoadora.height,
+    gotinhaVoadora.rows,
+    gotinhaVoadora.cols,
+    gotinhaVoadora.x,
+    gotinhaVoadora.y,
+    gotinhaVoadora.deltaY,
+    gotinhaVoadora.matriz,
+    gotinhaVoadora.velocidade,
+    gotinhaVoadora.delay
+  );
+
+  inimigos.push(gotinha1);
+  inimigos.push(troll1);
+  inimigos.push(voador1);
 
   frameRate(40);
+
+  noLoop();
   //trilhaSonora.loop();
 }
 
@@ -173,21 +78,100 @@ function keyPressed() {
     protagonista.pula();
     somPulo.play();
   }
+  if (keyCode === ENTER) {
+    switch (gameState) {
+      case "start":
+        gameState = "main";
+        loop();
+        break;
+      case "main":
+        gameState = "paused";
+        noLoop();
+        break;
+      case "paused":
+        gameState = "main";
+        loop();
+        break;
+      case "over":
+        gameState = "start";
+        reset();
+        redraw();
+        break;
+      default:
+        gameState = "main";
+        break;
+    }
+  }
 }
-
 function draw() {
   cenario.show();
   cenario.move();
 
   protagonista.show();
+
+  if (gameState === "start") {
+    textAlign(CENTER, CENTER);
+    textSize(50);
+    fill("#fff");
+    text("Press ENTER to begin", width / 2, height / 2);
+  }
+
+  if (gameState === "paused") {
+    textAlign(CENTER, CENTER);
+    fill("#fff");
+    textSize(50);
+    text("PAUSED", width / 2, height / 2);
+    textSize(30);
+    text("Press ENTER to resume", width / 2, height / 2 + 50);
+  }
+
+  pontuacao.show();
+  pontuacao.adicionarPonto();
+
   protagonista.aplicaGravidade();
 
-  gotinha1.showMatriz(gotinha1.matriz);
-  gotinha1.move();
-  troll1.showMatriz(troll1.matriz);
-  troll1.move();
+  if (keyIsDown(LEFT_ARROW)) {
+    protagonista.moveLeft();
+  }
+  if (keyIsDown(RIGHT_ARROW)) {
+    protagonista.moveRight();
+  }
 
-  if (protagonista.estaColidindo(gotinha1)) {
+  const inimigo = inimigos[inimigoAtual];
+  const inimigoVisivel = inimigo.x < -inimigo.charWidth;
+
+  inimigo.showMatriz(inimigo.matriz);
+  inimigo.move();
+
+  if (inimigoVisivel) {
+    console.log(inimigoAtual);
+    inimigoAtual++;
+    if (inimigoAtual >= inimigos.length) {
+      inimigoAtual = 0;
+    }
+    inimigo.velocidade = floor(random(10, 30));
+  }
+
+  if (protagonista.estaColidindo(inimigo)) {
+    image(gameOver, width / 2 - 200, height / 3);
+    gameState = "over";
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    fill("#fff");
+    text("Press ENTER to play again", width / 2, height / 3 + 150);
     noLoop();
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function reset() {
+  pontuacao.pontos = 0;
+  protagonista.resetPosition();
+  inimigos.forEach((inimigo) => {
+    inimigo.resetPosition();
+  });
+  return;
 }

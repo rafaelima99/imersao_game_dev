@@ -1,4 +1,4 @@
-class Inimigo extends Personagem {
+class Inimigo extends Animacao {
   constructor(
     sprite,
     spriteWidth,
@@ -29,6 +29,7 @@ class Inimigo extends Personagem {
     );
     this.velocidade = velocidade;
     this.delay = delay;
+    this.x = width + this.delay;
   }
 
   move() {
@@ -36,5 +37,9 @@ class Inimigo extends Personagem {
     if (this.x < -this.charWidth - this.delay) {
       this.x = width;
     }
+  }
+
+  resetPosition() {
+    this.x = width + this.delay;
   }
 }

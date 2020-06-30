@@ -1,4 +1,4 @@
-class Personagem {
+class Animacao {
   constructor(
     sprite,
     spriteWidth,
@@ -29,12 +29,12 @@ class Personagem {
     this.curSpriteX = 0;
     this.curSpriteY = 0;
 
-    this.frameAtual = 0;
+    this.curFrame = 0;
     this.matriz = matriz;
 
-    this.velocidadeDoPulo = 0;
-    this.alturaDoPulo = 30;
-    this.gravidade = 3;
+    this.jumpSpeed = 0;
+    this.jumpHeight = 50;
+    this.gravity = 6;
 
     /*this.matriz = [
       [0,0],
@@ -94,8 +94,8 @@ class Personagem {
       this.y,
       this.charWidth,
       this.charHeight,
-      matriz[this.frameAtual][0],
-      matriz[this.frameAtual][1],
+      this.matriz[this.curFrame][0],
+      this.matriz[this.curFrame][1],
       this.spriteWidth,
       this.spriteHeight
     );
@@ -104,9 +104,9 @@ class Personagem {
   }
 
   animateMatriz() {
-    this.frameAtual++;
-    if (this.frameAtual >= this.matriz.length - 1) {
-      this.frameAtual = 0;
+    this.curFrame++;
+    if (this.curFrame >= this.matriz.length - 1) {
+      this.curFrame = 0;
     }
   }
 
