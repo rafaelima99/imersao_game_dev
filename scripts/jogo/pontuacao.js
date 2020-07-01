@@ -10,7 +10,15 @@ class Pontuacao {
     text(parseInt(this.pontos), width - 30, 50);
   }
 
-  adicionarPonto() {
+  addPoint() {
     this.pontos += 0.1;
+  }
+
+  setScore(value) {
+    this.pontos = value;
+  }
+
+  getScore() {
+    return this.pontos;
   }
 }

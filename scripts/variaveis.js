@@ -54,6 +54,38 @@ const gotinha = {
   velocidade: 10,
   delay: 100,
 };
+const gotinhaVoadora = {
+  sprite: "",
+  width: 68,
+  height: 54,
+  spriteWidth: 200,
+  spriteHeight: 150,
+  rows: 6,
+  cols: 5,
+  x: 0,
+  y: 0,
+  deltaY: 200,
+  matriz: [
+    [0, 0],
+    [200, 0],
+    [400, 0],
+    [0, 150],
+    [200, 150],
+    [400, 150],
+    [0, 300],
+    [200, 300],
+    [400, 300],
+    [0, 450],
+    [200, 450],
+    [400, 450],
+    [0, 600],
+    [200, 600],
+    [400, 600],
+    [0, 750],
+  ],
+  velocidade: 10,
+  delay: 100,
+};
 const troll = {
   sprite: "",
   width: 200,
@@ -98,50 +130,29 @@ const troll = {
   velocidade: 10,
   delay: 100,
 };
-const gotinhaVoadora = {
-  sprite: "",
-  width: 68,
-  height: 54,
-  spriteWidth: 200,
-  spriteHeight: 150,
-  rows: 6,
-  cols: 5,
-  x: 0,
-  y: 0,
-  deltaY: 200,
-  matriz: [
-    [0, 0],
-    [200, 0],
-    [400, 0],
-    [0, 150],
-    [200, 150],
-    [400, 150],
-    [0, 300],
-    [200, 300],
-    [400, 300],
-    [0, 450],
-    [200, 450],
-    [400, 450],
-    [0, 600],
-    [200, 600],
-    [400, 600],
-    [0, 750],
-  ],
-  velocidade: 10,
-  delay: 100,
-};
 
+let jogo;
 let gameState;
+let states;
+let start;
+let main;
+let paused;
+let over;
 
 let cenario;
+let pontuacao;
+let startButton;
+let restartButton;
+
 let protagonista;
 let gotinha1;
 let troll1;
 let voador1;
 const inimigos = [];
-let inimigoAtual = 0;
 
 let imagemCenario;
+let imagemInicial;
+let fonteTelaInicial;
 let gameOver;
 let trilhaSonora;
 let somPulo;
