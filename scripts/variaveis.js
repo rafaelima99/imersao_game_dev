@@ -52,7 +52,6 @@ const gotinha = {
     [315, 624],
   ],
   velocidade: 10,
-  delay: 100,
 };
 const gotinhaVoadora = {
   sprite: "",
@@ -84,7 +83,6 @@ const gotinhaVoadora = {
     [0, 750],
   ],
   velocidade: 10,
-  delay: 100,
 };
 const troll = {
   sprite: "",
@@ -128,7 +126,6 @@ const troll = {
     [800, 2000],
   ],
   velocidade: 10,
-  delay: 100,
 };
 
 let jogo;
@@ -141,6 +138,7 @@ let over;
 
 let cenario;
 let pontuacao;
+let hp;
 let startButton;
 let restartButton;
 
@@ -152,6 +150,7 @@ const inimigos = [];
 
 let imagemCenario;
 let imagemInicial;
+let imgHP;
 let fonteTelaInicial;
 let gameOver;
 let trilhaSonora;

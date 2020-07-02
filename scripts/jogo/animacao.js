@@ -36,6 +36,8 @@ class Animacao {
     this.jumpHeight = 50;
     this.gravity = 6;
 
+    this.invencivel = false;
+
     /*this.matriz = [
       [0,0],
       [2*this.charWidth,0],
@@ -110,7 +112,16 @@ class Animacao {
     }
   }
 
+  tornarInvencivel() {
+    this.invencivel = true;
+    setTimeout(() => {
+      this.invencivel = false;
+    }, 1000);
+  }
+
   estaColidindo(inimigo) {
+    if (this.invencivel) return false;
+
     const precisao = 0.7;
     const colisao = collideRectRect(
       this.x,

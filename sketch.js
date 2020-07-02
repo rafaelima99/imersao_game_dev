@@ -8,8 +8,6 @@ function setup() {
   paused = new PausedScreen();
   over = new EndScreen();
 
-  startButton = new Button("START", width / 2, height / 2 + 80);
-
   main.setup();
 
   states = {

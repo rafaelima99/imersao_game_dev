@@ -22,6 +22,7 @@ class Button {
       loop();
     } else if (gameState == "over") {
       gameState = "start";
+      redraw();
     }
   }
 }

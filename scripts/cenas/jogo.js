@@ -1,11 +1,21 @@
 class Jogo {
   constructor() {
-    this.inimigoAtual = 0;
+    this.index = 0;
+    this.mapa = [
+      { inimigo: 0, velocidade: 10 },
+      { inimigo: 1, velocidade: 30 },
+      { inimigo: 1, velocidade: 15 },
+      { inimigo: 2, velocidade: 40 },
+      { inimigo: 2, velocidade: 10 },
+      { inimigo: 1, velocidade: 20 },
+      { inimigo: 0, velocidade: 30 },
+    ];
   }
 
   setup() {
     cenario = new Cenario(imagemCenario, 2);
     pontuacao = new Pontuacao();
+    hp = new Vida(3, 3);
 
     protagonista = new Protagonista(
       Hipsta.sprite,
@@ -93,6 +103,7 @@ class Jogo {
 
     protagonista.show();
 
+    hp.draw();
     pontuacao.show();
     pontuacao.addPoint();
 
@@ -105,29 +116,28 @@ class Jogo {
       protagonista.moveRight();
     }
 
-    const inimigo = inimigos[this.inimigoAtual];
+    const linhaAtual = this.mapa[this.index];
+    const inimigo = inimigos[linhaAtual.inimigo];
     const inimigoVisivel = inimigo.x < -inimigo.charWidth;
+    inimigo.velocidade = linhaAtual.velocidade;
 
     inimigo.showMatriz(inimigo.matriz);
     inimigo.move();
 
     if (inimigoVisivel) {
-      console.log(this.inimigoAtual);
-      this.inimigoAtual++;
-      if (this.inimigoAtual >= inimigos.length) {
-        this.inimigoAtual = 0;
+      inimigo.appear();
+      this.index++;
+      if (this.index > this.mapa.length - 1) {
+        this.index = 0;
       }
-      inimigo.velocidade = floor(random(10, 30));
     }
 
     if (protagonista.estaColidindo(inimigo)) {
-      image(gameOver, width / 2 - 200, height / 3);
-      gameState = "over";
-      textAlign(CENTER, CENTER);
-      textSize(30);
-      fill("#fff");
-      text("Press ENTER to play again", width / 2, height / 3 + 150);
-      noLoop();
+      hp.perdeVida();
+      protagonista.tornarInvencivel();
+      if (hp.vidas < 0) {
+        gameState = "over";
+      }
     }
   }
 
