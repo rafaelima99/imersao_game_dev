@@ -141,6 +141,7 @@ let pontuacao;
 let hp;
 let startButton;
 let restartButton;
+let fita;
 
 let protagonista;
 let gotinha1;

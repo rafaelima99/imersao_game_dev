@@ -33,6 +33,7 @@ class Protagonista extends Animacao {
     if (this.jumps < this.maxJumps) {
       this.jumpSpeed -= this.jumpHeight;
       this.jumps++;
+      somPulo.play();
       return;
     }
   }

@@ -1,21 +1,13 @@
 class Jogo {
   constructor() {
     this.index = 0;
-    this.mapa = [
-      { inimigo: 0, velocidade: 10 },
-      { inimigo: 1, velocidade: 30 },
-      { inimigo: 1, velocidade: 15 },
-      { inimigo: 2, velocidade: 40 },
-      { inimigo: 2, velocidade: 10 },
-      { inimigo: 1, velocidade: 20 },
-      { inimigo: 0, velocidade: 30 },
-    ];
+    this.mapa = fita.mapa;
   }
 
   setup() {
     cenario = new Cenario(imagemCenario, 2);
     pontuacao = new Pontuacao();
-    hp = new Vida(3, 3);
+    hp = new Vida(fita.config.vidaMaxima, fita.config.vidaInicial);
 
     protagonista = new Protagonista(
       Hipsta.sprite,
@@ -83,7 +75,6 @@ class Jogo {
   keyPressed(key) {
     if (key === "ArrowUp") {
       protagonista.pula();
-      somPulo.play();
     }
     if (keyCode === ENTER) {
       switch (gameState) {

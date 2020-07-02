@@ -4,6 +4,7 @@ function preload() {
   imgHP = loadImage("imagens/assets/coracao.png");
   imagemInicial = loadImage("imagens/cenario/telaInicial.png");
   fonteTelaInicial = loadFont("imagens/assets/fonteTelaInicial.otf");
+  fita = loadJSON("fita/fita.json");
 
   Hipsta.sprite = loadImage("imagens/personagem/correndo.png");
   gotinha.sprite = loadImage("imagens/inimigos/gotinha.png");
